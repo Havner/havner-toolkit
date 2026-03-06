@@ -81,16 +81,15 @@
 		</div>
 		<details open>
 			<summary style="margin-bottom: 0.25rem; font-size: 1.25rem">Details</summary>
-			<code style="word-break: break-all">[t("hello world!"),m(10,10,r),s(5),b(l),k(ctrl,p),k(uni('a')),k(ctrl,r)]</code>
+			<code style="word-break: break-all">[ m(10,10,r), s(5), b(l), k(LeftCtrl,p), k(A), k(LeftCtrl,r) ]</code>
 			<p>The example above becomes something like this:</p>
 			<!-- deno-fmt-ignore -->
 			<code style="white-space: pre;">[
-	Text("hello world!"),
 	MoveMouse(10, 10, Relative),
 	Scroll(5, Vertical),
 	Button(Left, Click),
 	Key(Control, Press),
-	Key(Unicode('a'), Click),
+	Key(A, Click),
 	Key(Control, Release),
 ]</code>
 			<p>
@@ -99,11 +98,16 @@
 			</p>
 			<!-- deno-fmt-ignore -->
 			<p>
-				You can find a list of all of the keycodes
-				<span style="color: dodgerblue; cursor: pointer;" onclick="window.open('https://github.com/enigo-rs/enigo/blob/v0.5.0/src/keycodes.rs', '_blank');">here</span>.
-				Please note that not all keycodes are available on all operating systems, as is marked on each such keycode on the line above it.
-				You can find the possible buttons, directions, axis and coordinate types
-				<span style="color: dodgerblue; cursor: pointer;" onclick="window.open('https://github.com/enigo-rs/enigo/blob/v0.5.0/src/lib.rs', '_blank');">here</span>.
+				The list of possible tokens is available
+				<span style="color: dodgerblue; cursor: pointer;" onclick="window.open('https://github.com/Havner/havner-toolkit/blob/main/src/uinput/types.rs#L335', '_blank');">here</span>.
+				Above those tokens a possible values for directions, buttons, and other values can be seen.<br/>
+
+				The list of possible keys (for use with 'k') is available
+				<span style="color: dodgerblue; cursor: pointer;" onclick="window.open('https://github.com/Havner/havner-toolkit/blob/main/src/uinput/types.rs#L6', '_blank');">here</span>.
+				Be mindful as they are case sensitive.<br/>
+
+				The raw list of keycodes that can be used with 'kc' (as a string, e.g: "KEY_A") or 'r' (as an int) is available here:
+				<span style="color: dodgerblue; cursor: pointer;" onclick="window.open('https://github.com/emberian/evdev/blob/main/src/scancodes.rs#L26', '_blank');">here</span>.
 			</p>
 		</details>
 	</body>
