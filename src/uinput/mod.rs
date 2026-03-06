@@ -3,7 +3,6 @@ mod types;
 
 use std::sync::LazyLock;
 use openaction::*;
-use anyhow::Context;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value::Null, json};
 use tokio::sync::Mutex;
@@ -26,8 +25,8 @@ async fn execute_input(value: Option<String>) -> Result<(), anyhow::Error> {
 		if uinput_guard.is_none() {
 			uinput_guard.replace(Uinput::new()?);
 		}
-		let uinput = uinput_guard.as_mut().context("uinput lock failed")?;
-		let tokens: Vec<Token> = ron::from_str(&value).context("ron from_str failed")?;
+		let uinput = uinput_guard.as_mut().ok_or(anyhow::anyhow!("lock failed"))?;
+		let tokens: Vec<Token> = ron::from_str(&value)?;
 		for token in tokens {
 			uinput.execute(token)?;
 		}

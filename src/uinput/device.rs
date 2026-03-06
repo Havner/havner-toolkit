@@ -1,4 +1,3 @@
-use anyhow::Context;
 use evdev::uinput::VirtualDevice;
 use evdev::{AttributeSet, EventType, InputEvent, KeyCode, RelativeAxisCode};
 
@@ -24,15 +23,11 @@ impl Uinput {
         rel.insert(RelativeAxisCode::REL_WHEEL);
         rel.insert(RelativeAxisCode::REL_HWHEEL);
 
-        let device = VirtualDevice::builder()
-            .context("uinput builder() failed")?
+        let device = VirtualDevice::builder()?
             .name("havner toolkit uinput device")
-            .with_keys(&keys)
-            .context("uinput builder.with_keys() failed")?
-            .with_relative_axes(&rel)
-            .context("uinput builder.with_rel_axes() failed")?
-            .build()
-            .context("uinput builder.build() failed")?;
+            .with_keys(&keys)?
+            .with_relative_axes(&rel)?
+            .build()?;
 
         Ok(Self { device })
     }
@@ -64,7 +59,7 @@ impl Uinput {
             Direction::Release => &[InputEvent::new(EventType::KEY.0, keycode, 0)],
         };
 
-        self.device.emit(events).context("emit raw events failed")?;
+        self.device.emit(events)?;
         Ok(())
     }
 
@@ -95,14 +90,14 @@ impl Uinput {
                 InputEvent::new(EventType::RELATIVE.0, RelativeAxisCode::REL_X.0, i32::MIN),
                 InputEvent::new(EventType::RELATIVE.0, RelativeAxisCode::REL_Y.0, i32::MIN),
             ];
-            self.device.emit(top_left_corner).context("emit mouse events failed")?;
+            self.device.emit(top_left_corner)?;
         }
 
         let events: &[InputEvent] = &[
             InputEvent::new(EventType::RELATIVE.0, RelativeAxisCode::REL_X.0, x),
             InputEvent::new(EventType::RELATIVE.0, RelativeAxisCode::REL_Y.0, y),
         ];
-        self.device.emit(events).context("emit mouse events failed")?;
+        self.device.emit(events)?;
 
         Ok(())
     }
@@ -117,7 +112,7 @@ impl Uinput {
             InputEvent::new(EventType::RELATIVE.0, axis, length),
             InputEvent::new(EventType::RELATIVE.0, axis, length),
         ];
-        self.device.emit(events).context("emit scroll events failed")?;
+        self.device.emit(events)?;
 
         Ok(())
     }
