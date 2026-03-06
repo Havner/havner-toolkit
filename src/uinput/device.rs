@@ -1,7 +1,7 @@
 use evdev::uinput::VirtualDevice;
 use evdev::{AttributeSet, EventType, InputEvent, KeyCode, RelativeAxisCode};
 
-use super::types::{Direction, Coordinate, ScrollAxis, Token};
+use super::types::{Button, Coordinate, Direction, Key, ScrollAxis, Token};
 
 // from libc/compat, not sure why evdev doesn't reexport that
 const KEY_MAX: u16 = 0x2ff;
@@ -34,16 +34,18 @@ impl Uinput {
 
     pub(super) fn execute(&mut self, token: Token) -> anyhow::Result<()> {
         match token {
+            Token::Key(k, d) => self.key(k, d),
             Token::KeyCode(kc, d) => self.key_code(kc, d),
             Token::Raw(c, d) => self.raw(c, d),
+            Token::Button(b, d) => self.button(b, d),
             Token::MoveMouse(x, y, c) => self.move_mouse(x, y, c),
             Token::Scroll(l, a) => self.scroll(l, a),
         }
     }
 
-    // fn key(&mut self, key: Key, direction: Direction) -> anyhow::Result<()> {
-    //     Ok(())
-    // }
+    fn key(&mut self, key: Key, direction: Direction) -> anyhow::Result<()> {
+        self.raw(key.code(), direction)
+    }
 
     fn key_code(&mut self, key_code: KeyCode, direction: Direction) -> anyhow::Result<()> {
         self.raw(key_code.0, direction)
@@ -63,25 +65,17 @@ impl Uinput {
         Ok(())
     }
 
-    // fn button(&mut self, button: Button, direction: Direction) -> anyhow::Result<()> {
-    //     let keycode = match button {
-    //         Button::Left => KeyCode::BTN_LEFT,
-    //         Button::Right => KeyCode::BTN_RIGHT,
-    //         Button::Middle => KeyCode::BTN_MIDDLE,
-    //         Button::Back => KeyCode::BTN_BACK,
-    //         Button::Forward => KeyCode::BTN_FORWARD,
-    //         _ => return inverr!("scroll buttons are not supported by uinput"),
-    //     };
-    //     let events: &[InputEvent] = match direction {
-    //         Direction::Click => &[InputEvent::new(EventType::KEY.0, keycode.0, 1),
-    //                              InputEvent::new(EventType::KEY.0, keycode.0, 0)],
-    //         Direction::Press => &[InputEvent::new(EventType::KEY.0, keycode.0, 1)],
-    //         Direction::Release => &[InputEvent::new(EventType::KEY.0, keycode.0, 0)],
-    //     };
-
-    //     self.device.emit(events).or(simerr!("sending uinput events failed"))?;
-    //     Ok(())
-    // }
+    fn button(&mut self, button: Button, direction: Direction) -> anyhow::Result<()> {
+        let keycode = button.code();
+        match direction {
+            // for some strange reason click doesn't work for mouse in one emit
+            Direction::Click => {
+                self.raw(keycode, Direction::Press)?;
+                self.raw(keycode, Direction::Release)
+            }
+            _ => self.raw(keycode, direction),
+        }
+    }
 
     fn move_mouse(&mut self, x: i32, y: i32, coordinate: Coordinate) -> anyhow::Result<()> {
         // uinput doesn't know about screen coordinates, simulate absolute
