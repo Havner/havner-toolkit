@@ -4,26 +4,13 @@
 	"Author": "Aman Khanna (nekename)",
 	"Version": "2.10.0",
 	"CodePaths": {
-		"x86_64-pc-windows-msvc": "x86_64-pc-windows-msvc/bin/opendeck-starterpack.exe",
-		"x86_64-apple-darwin": "x86_64-apple-darwin/bin/opendeck-starterpack",
-		"aarch64-apple-darwin": "aarch64-apple-darwin/bin/opendeck-starterpack",
-		"x86_64-unknown-linux-gnu": "x86_64-unknown-linux-gnu/bin/opendeck-starterpack",
-		"aarch64-unknown-linux-gnu": "aarch64-unknown-linux-gnu/bin/opendeck-starterpack"
+		"x86_64-unknown-linux-gnu": "x86_64-unknown-linux-gnu/bin/havner-toolbox",
+		"aarch64-unknown-linux-gnu": "aarch64-unknown-linux-gnu/bin/havner-toolbox"
 	},
-	"CodePathWin": "x86_64-pc-windows-msvc/bin/opendeck-starterpack.exe",
-	"CodePathMac": "x86_64-apple-darwin/bin/opendeck-starterpack",
-	"CodePathLin": "x86_64-unknown-linux-gnu/bin/opendeck-starterpack",
+	"CodePathLin": "x86_64-unknown-linux-gnu/bin/havner-toolbox",
 	"Icon": "icons/plugin",
-	"Category": "OpenDeck",
+	"Category": "Havner Toolbox",
 	"OS": [
-		{
-			"Platform": "mac",
-			"MinimumVersion": "10.11"
-		},
-		{
-			"Platform": "windows",
-			"MinimumVersion": "10"
-		},
 		{
 			"Platform": "linux"
 		}

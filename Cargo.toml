@@ -1,6 +1,6 @@
 [package]
-name = "opendeck-starterpack"
-authors = ["Aman Khanna (nekename)"]
+name = "havner-toolbox"
+authors = ["Lukasz Pawelczyk (havner)"]
 license = "GPL-3.0-or-later"
 edition = "2024"
 
