@@ -1,9 +1,6 @@
-#![allow(dead_code, unused_variables, unused_imports)]
-
-use anyhow::{Context, anyhow};
+use anyhow::Context;
 use evdev::uinput::VirtualDevice;
 use evdev::{AttributeSet, EventType, InputEvent, KeyCode, RelativeAxisCode};
-use log::{debug, error, trace, warn};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
