@@ -1,0 +1,3 @@
+# Allows non-root users to have write access to uinput device by
+# automatically giving ACL to a local user upon logging in.
+KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
