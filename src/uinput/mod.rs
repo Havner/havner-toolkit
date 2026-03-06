@@ -1,12 +1,13 @@
-use std::sync::LazyLock;
+mod device;
 
+use std::sync::LazyLock;
 use openaction::*;
 use anyhow::Context;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value::Null, json};
 use tokio::sync::Mutex;
 
-use crate::uinput::{Uinput, Token};
+use device::{Uinput, Token};
 
 static UINPUT: LazyLock<Mutex<Option<Uinput>>> = LazyLock::new(|| Mutex::new(Option::None));
 
@@ -38,19 +39,19 @@ async fn execute_input(value: Option<String>) -> Result<(), anyhow::Error> {
 
 #[derive(Serialize, Deserialize, Default, Clone)]
 #[serde(default)]
-pub struct InputSimulationSettings {
+pub struct SimulationSettings {
 	down: Option<String>,
 	up: Option<String>,
 	anticlockwise: Option<String>,
 	clockwise: Option<String>,
 }
 
-pub struct InputSimulationAction;
+pub struct SimulationAction;
 
 #[async_trait]
-impl Action for InputSimulationAction {
+impl Action for SimulationAction {
 	const UUID: &'static str = "com.havner.toolbox.uinputsimulation";
-	type Settings = InputSimulationSettings;
+	type Settings = SimulationSettings;
 
 	async fn key_down(
 		&self,

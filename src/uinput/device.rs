@@ -1,13 +1,13 @@
 #![allow(dead_code, unused_variables, unused_imports)]
 
-use anyhow::{anyhow, Context};
+use anyhow::{Context, anyhow};
 use evdev::uinput::VirtualDevice;
 use evdev::{AttributeSet, EventType, InputEvent, KeyCode, RelativeAxisCode};
 use log::{debug, error, trace, warn};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
-pub enum Direction {
+pub(super) enum Direction {
     #[serde(alias = "P")]
     #[serde(alias = "p")]
     #[serde(alias = "Pressed")]
@@ -27,7 +27,7 @@ pub enum Direction {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
-pub enum Coordinate {
+pub(super) enum Coordinate {
     #[serde(alias = "A")]
     #[serde(alias = "a")]
     #[default]
@@ -38,7 +38,7 @@ pub enum Coordinate {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
-pub enum ScrollAxis {
+pub(super) enum ScrollAxis {
     #[serde(alias = "H")]
     #[serde(alias = "h")]
     Horizontal,
@@ -49,7 +49,7 @@ pub enum ScrollAxis {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum Token {
+pub(super) enum Token {
     #[serde(alias = "KC")]
     #[serde(alias = "kc")]
     KeyCode(KeyCode, #[serde(default)] Direction),
@@ -67,12 +67,12 @@ pub enum Token {
 // from libc/compat, not sure why evdev doesn't reexport that
 const KEY_MAX: u16 = 0x2ff;
 
-pub struct Uinput {
+pub(super) struct Uinput {
     device: VirtualDevice,
 }
 
 impl Uinput {
-    pub fn new() -> Result<Self, anyhow::Error> {
+    pub(super) fn new() -> Result<Self, anyhow::Error> {
         let mut keys = AttributeSet::<KeyCode>::new();
         for code in 0u16..=KEY_MAX {
             keys.insert(KeyCode::new(code));
@@ -97,7 +97,7 @@ impl Uinput {
         Ok(Self { device })
     }
 
-    pub fn execute(&mut self, token: Token) -> anyhow::Result<()> {
+    pub(super) fn execute(&mut self, token: Token) -> anyhow::Result<()> {
         match token {
             Token::KeyCode(kc, d) => self.key_code(kc, d),
             Token::Raw(c, d) => self.raw(c, d),
