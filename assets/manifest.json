@@ -17,54 +17,14 @@
 	],
 	"Actions": [
 		{
-			"Icon": "icons/runCommand",
-			"Name": "Run Command",
-			"States": [{ "Image": "actionDefaultImage" }],
-			"Controllers": ["Keypad", "Encoder"],
-			"SupportedInMultiActions": true,
-			"Tooltip": "Run a command",
-			"UUID": "com.amansprojects.starterpack.runcommand",
-			"PropertyInspectorPath": "propertyInspector/runCommand.html"
-		},
-		{
-			"Icon": "icons/openUrl",
-			"Name": "Open URL",
-			"States": [{ "Image": "actionDefaultImage" }],
-			"Controllers": ["Keypad", "Encoder"],
-			"SupportedInMultiActions": true,
-			"Tooltip": "Open a URL",
-			"UUID": "com.amansprojects.starterpack.openurl",
-			"PropertyInspectorPath": "propertyInspector/openUrl.html"
-		},
-		{
-			"Icon": "icons/inputSimulation",
-			"Name": "Simulate Input",
+			"Icon": "icons/uinputSimulation",
+			"Name": "Uinput Simulator",
 			"States": [{ "Image": "actionDefaultImage" }],
 			"Controllers": ["Keypad", "Encoder"],
 			"SupportedInMultiActions": true,
 			"Tooltip": "Simulate mouse or keyboard input",
-			"UUID": "com.amansprojects.starterpack.inputsimulation",
-			"PropertyInspectorPath": "propertyInspector/inputSimulation.html"
-		},
-		{
-			"Icon": "icons/switchProfile",
-			"Name": "Switch Profile",
-			"States": [{ "Image": "actionDefaultImage" }],
-			"Controllers": ["Keypad", "Encoder"],
-			"SupportedInMultiActions": true,
-			"Tooltip": "Switch the selected profile",
-			"UUID": "com.amansprojects.starterpack.switchprofile",
-			"PropertyInspectorPath": "propertyInspector/switchProfile.html"
-		},
-		{
-			"Icon": "icons/deviceBrightness",
-			"Name": "Device Brightness",
-			"States": [{ "Image": "actionDefaultImage" }],
-			"Controllers": ["Keypad", "Encoder"],
-			"SupportedInMultiActions": true,
-			"Tooltip": "Change the device brightness",
-			"UUID": "com.amansprojects.starterpack.devicebrightness",
-			"PropertyInspectorPath": "propertyInspector/deviceBrightness.html"
+			"UUID": "com.havner.toolbox.uinputsimulation",
+			"PropertyInspectorPath": "propertyInspector/uinputSimulation.html"
 		}
 	]
 }

@@ -50,7 +50,7 @@ pub struct InputSimulationSettings {
 pub struct InputSimulationAction;
 #[async_trait]
 impl Action for InputSimulationAction {
-	const UUID: &'static str = "com.amansprojects.starterpack.inputsimulation";
+	const UUID: &'static str = "com.havner.toolbox.uinputsimulation";
 	type Settings = InputSimulationSettings;
 
 	async fn key_down(

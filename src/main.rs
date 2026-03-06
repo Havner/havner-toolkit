@@ -1,28 +1,10 @@
-mod device_brightness;
-mod input_simulation;
-mod open_url;
-mod run_command;
-mod switch_profile;
+mod uinput_simulation;
 
 use openaction::*;
 
 struct GlobalEventHandler;
 #[async_trait]
-impl global_events::GlobalEventHandler for GlobalEventHandler {
-	async fn device_did_connect(
-		&self,
-		_event: global_events::DeviceDidConnectEvent,
-	) -> OpenActionResult<()> {
-		switch_profile::update_devices().await
-	}
-
-	async fn device_did_disconnect(
-		&self,
-		_event: global_events::DeviceDidDisconnectEvent,
-	) -> OpenActionResult<()> {
-		switch_profile::update_devices().await
-	}
-}
+impl global_events::GlobalEventHandler for GlobalEventHandler {}
 
 #[tokio::main]
 async fn main() -> OpenActionResult<()> {
@@ -39,11 +21,7 @@ async fn main() -> OpenActionResult<()> {
 	}
 
 	global_events::set_global_event_handler(&GlobalEventHandler);
-	register_action(device_brightness::DeviceBrightnessAction).await;
-	register_action(input_simulation::InputSimulationAction).await;
-	register_action(open_url::OpenUrlAction).await;
-	register_action(run_command::RunCommandAction).await;
-	register_action(switch_profile::SwitchProfileAction).await;
+	register_action(uinput_simulation::InputSimulationAction).await;
 
 	run(std::env::args().collect()).await
 }
