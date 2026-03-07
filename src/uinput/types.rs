@@ -276,10 +276,20 @@ impl Key {
 #[repr(u16)]
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub(super) enum Button {
+    #[serde(alias = "L")]
+    #[serde(alias = "l")]
     Left = KeyCode::BTN_LEFT.0,
+    #[serde(alias = "M")]
+    #[serde(alias = "m")]
     Middle = KeyCode::BTN_MIDDLE.0,
+    #[serde(alias = "R")]
+    #[serde(alias = "r")]
     Right = KeyCode::BTN_RIGHT.0,
+    #[serde(alias = "B")]
+    #[serde(alias = "b")]
     Back = KeyCode::BTN_SIDE.0,
+    #[serde(alias = "F")]
+    #[serde(alias = "f")]
     Forward = KeyCode::BTN_EXTRA.0,
 }
 
