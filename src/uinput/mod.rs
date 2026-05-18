@@ -1,10 +1,11 @@
 pub mod types;
+pub(crate) mod devices;
 
 use openaction::*;
 use serde::{Deserialize, Serialize};
-use serde_json::{Value::Null, json};
+use serde_json::{json, Value::Null};
 use std::sync::mpsc::Sender;
-use std::sync::{OnceLock};
+use std::sync::OnceLock;
 
 use types::Token;
 
