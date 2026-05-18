@@ -1,16 +1,18 @@
-mod device;
-mod types;
+pub mod types;
 
 use openaction::*;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value::Null, json};
-use std::sync::LazyLock;
-use tokio::sync::Mutex;
+use std::sync::mpsc::Sender;
+use std::sync::{OnceLock};
 
-use device::Uinput;
 use types::Token;
 
-static UINPUT: LazyLock<Mutex<Option<Uinput>>> = LazyLock::new(|| Mutex::new(Option::None));
+static WORKER_TX: OnceLock<Sender<Vec<Token>>> = OnceLock::new();
+
+pub fn set_worker_tx(tx: Sender<Vec<Token>>) -> Result<(), Sender<Vec<Token>>> {
+    WORKER_TX.set(tx)
+}
 
 async fn execute_input(value: Option<String>) -> Result<(), anyhow::Error> {
     let Some(value) = value else {
@@ -20,22 +22,10 @@ async fn execute_input(value: Option<String>) -> Result<(), anyhow::Error> {
         return Ok(());
     }
 
-    let mut uinput_guard = UINPUT.lock().await;
-    std::thread::spawn(move || -> Result<(), anyhow::Error> {
-        if uinput_guard.is_none() {
-            uinput_guard.replace(Uinput::new()?);
-            // give a little time for initialization so the first event works
-            std::thread::sleep(std::time::Duration::from_millis(200));
-        }
-        let uinput = uinput_guard.as_mut().ok_or(anyhow::anyhow!("lock failed"))?;
+    if let Some(tx) = WORKER_TX.get() {
         let tokens: Vec<Token> = ron::from_str(&value)?;
-        for token in tokens {
-            uinput.execute(token)?;
-        }
-        Ok(())
-    })
-    .join()
-    .unwrap_or(Ok(()))?;
+        tx.send(tokens)?;
+    }
 
     Ok(())
 }
@@ -80,22 +70,6 @@ impl Action for SimulationAction {
         Ok(())
     }
 
-    async fn dial_down(
-        &self,
-        instance: &Instance,
-        settings: &Self::Settings,
-    ) -> OpenActionResult<()> {
-        self.key_down(instance, settings).await
-    }
-
-    async fn dial_up(
-        &self,
-        instance: &Instance,
-        settings: &Self::Settings,
-    ) -> OpenActionResult<()> {
-        self.key_up(instance, settings).await
-    }
-
     async fn dial_rotate(
         &self,
         instance: &Instance,
@@ -113,5 +87,21 @@ impl Action for SimulationAction {
             }
         }
         Ok(())
+    }
+
+    async fn dial_down(
+        &self,
+        instance: &Instance,
+        settings: &Self::Settings,
+    ) -> OpenActionResult<()> {
+        self.key_down(instance, settings).await
+    }
+
+    async fn dial_up(
+        &self,
+        instance: &Instance,
+        settings: &Self::Settings,
+    ) -> OpenActionResult<()> {
+        self.key_up(instance, settings).await
     }
 }

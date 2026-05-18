@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[repr(u16)]
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub(super) enum Key {
+pub(crate) enum Key {
     LeftShift = KeyCode::KEY_LEFTSHIFT.0,
     RightShift = KeyCode::KEY_RIGHTSHIFT.0,
     LeftCtrl = KeyCode::KEY_LEFTCTRL.0,
@@ -268,14 +268,14 @@ pub(super) enum Key {
 }
 
 impl Key {
-    pub(super) fn code(self) -> u16 {
+    pub(crate) fn code(self) -> u16 {
         self as u16
     }
 }
 
 #[repr(u16)]
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub(super) enum Button {
+pub(crate) enum Button {
     #[serde(alias = "L")]
     #[serde(alias = "l")]
     Left = KeyCode::BTN_LEFT.0,
@@ -294,13 +294,13 @@ pub(super) enum Button {
 }
 
 impl Button {
-    pub(super) fn code(self) -> u16 {
+    pub(crate) fn code(self) -> u16 {
         self as u16
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
-pub(super) enum Direction {
+pub(crate) enum Direction {
     #[serde(alias = "P")]
     #[serde(alias = "p")]
     #[serde(alias = "Pressed")]
@@ -320,7 +320,7 @@ pub(super) enum Direction {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
-pub(super) enum Coordinate {
+pub(crate) enum Coordinate {
     #[serde(alias = "A")]
     #[serde(alias = "a")]
     #[default]
@@ -331,7 +331,7 @@ pub(super) enum Coordinate {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
-pub(super) enum ScrollAxis {
+pub(crate) enum ScrollAxis {
     #[serde(alias = "H")]
     #[serde(alias = "h")]
     Horizontal,
@@ -342,7 +342,7 @@ pub(super) enum ScrollAxis {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub(super) enum Token {
+pub(crate) enum Token {
     #[serde(alias = "K")]
     #[serde(alias = "k")]
     Key(Key, #[serde(default)] Direction),
